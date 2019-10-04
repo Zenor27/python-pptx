@@ -60,14 +60,7 @@ class TextFrame(Subshape):
         p = self.paragraphs[0]
         p.clear()
 
-    def fit_text(
-        self,
-        font_family="Calibri",
-        max_size=18,
-        bold=False,
-        italic=False,
-        font_file=None,
-    ):
+    def fit_text(self, font_family="Calibri", max_size=18, bold=False, italic=False, font_file=None):
         """Fit text-frame text entirely within bounds of its shape.
 
         Make the text in this text frame fit entirely within the bounds of
@@ -85,9 +78,9 @@ class TextFrame(Subshape):
         if self.text == "":
             return
 
-        font_size = self._best_fit_font_size(
-            font_family, max_size, bold, italic, font_file
-        )
+        font_size = (
+            self._best_fit_font_size(font_family, max_size, bold, italic, font_file) - 1
+        )  # -1 to add some padding
         self._apply_fit(font_family, font_size, bold, italic)
 
     @property
@@ -202,23 +195,15 @@ class TextFrame(Subshape):
         setting to be removed from the text frame, causing it to inherit this
         setting from its style hierarchy.
         """
-        return {
-            ST_TextWrappingType.SQUARE: True,
-            ST_TextWrappingType.NONE: False,
-            None: None,
-        }[self._txBody.bodyPr.wrap]
+        return {ST_TextWrappingType.SQUARE: True, ST_TextWrappingType.NONE: False, None: None}[self._txBody.bodyPr.wrap]
 
     @word_wrap.setter
     def word_wrap(self, value):
         if value not in (True, False, None):
-            raise ValueError(
-                "assigned value must be True, False, or None, got %s" % value
-            )
-        self._txBody.bodyPr.wrap = {
-            True: ST_TextWrappingType.SQUARE,
-            False: ST_TextWrappingType.NONE,
-            None: None,
-        }[value]
+            raise ValueError("assigned value must be True, False, or None, got %s" % value)
+        self._txBody.bodyPr.wrap = {True: ST_TextWrappingType.SQUARE, False: ST_TextWrappingType.NONE, None: None}[
+            value
+        ]
 
     def _apply_fit(self, font_family, font_size, is_bold, is_italic):
         """
@@ -240,9 +225,7 @@ class TextFrame(Subshape):
         """
         if font_file is None:
             font_file = FontFiles.find(family, bold, italic)
-        return TextFitter.best_fit_font_size(
-            self.text, self._extents, max_size, font_file
-        )
+        return TextFitter.best_fit_font_size(self.text, self._extents, max_size, font_file)
 
     @property
     def _bodyPr(self):
