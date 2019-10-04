@@ -221,6 +221,13 @@ class BaseShape(object):
     def width(self, value):
         self._element.cx = value
 
+    @property
+    def alt_text(self):
+        """
+        Alternative text for the shape
+        """
+        return self._element.shape_alt_text
+
 
 class _PlaceholderFormat(ElementProxy):
     """
