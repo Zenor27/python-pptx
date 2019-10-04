@@ -79,9 +79,13 @@ class TextFitter(tuple):
             entirely within *extents* when rendered at *point_size* using the
             font defined in *font_file*.
             """
-            text_lines = self._wrap_lines(self._line_source, point_size)
-            cy = _rendered_size("Ty", point_size, self._font_file)[1]
-            return (cy * len(text_lines)) <= self._height
+            try:
+                text_lines = self._wrap_lines(self._line_source, point_size)
+                cy = _rendered_size("Ty", point_size, self._font_file)[1]
+                return (cy * len(text_lines)) <= self._height
+            # If wrap fail, the point size is not good
+            except:
+                return False
 
         return predicate
 
@@ -297,9 +301,7 @@ class _Fonts(object):
     @classmethod
     def font(cls, font_path, point_size):
         if (font_path, point_size) not in cls.fonts:
-            cls.fonts[(font_path, point_size)] = ImageFont.truetype(
-                font_path, point_size
-            )
+            cls.fonts[(font_path, point_size)] = ImageFont.truetype(font_path, point_size)
         return cls.fonts[(font_path, point_size)]
 
 
