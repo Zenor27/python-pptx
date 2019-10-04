@@ -37,7 +37,7 @@ DESCRIPTION = "Generate and manipulate Open XML PowerPoint (.pptx) files"
 KEYWORDS = "powerpoint ppt pptx office open xml"
 AUTHOR = "Antoine Montes(Fork from Steve Canny)"
 AUTHOR_EMAIL = "antoine.montes@epita.fr"
-URL = "git@github.com:Zenor27/python-pptx.git"
+URL = "https://github.com/Zenor27/python-pptx.git"
 LICENSE = license
 PACKAGES = find_packages(exclude=["tests", "tests.*"])
 PACKAGE_DATA = {"pptx": ["templates/*"]}
